@@ -1,0 +1,22 @@
+#!/usr/bin/env python3
+
+import sys
+
+if __name__ == "__main__":
+    if len(sys.argv) != 10:
+        print("Invalid number of arguments", file=sys.stderr)
+        sys.exit(84);
+
+    try:
+        resources = [int(x) for x in sys.argv[1:5]] # get resources
+        prices = [int(x) for x in sys.argv[5:]] # get prices
+    except:
+        print("All arguments mus be integers", file=sys.stderr)
+        sys.exit(84)
+
+    if any(x < 0 for x in resources): # check if all resources are greater or equal to 0
+        print("A quantity must be greater or equal to 0", file=sys.stderr)
+        sys.exit(84)
+    elif any(x <= 0 for x in prices): # check if all prices are greater than 0
+        print("The price must be greater than 0", file=sys.stderr)
+        sys.exit(84)
