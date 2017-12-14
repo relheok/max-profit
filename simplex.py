@@ -9,6 +9,7 @@ class Simplex:
         self.pivot = {'x': -1, 'y': -1}
         self.resources = resources
         self.prices = prices
+        self.base = [-1] * len(prices)
 
 
     def solve(self):
@@ -16,6 +17,12 @@ class Simplex:
         while any(x < 0 for x in self.mtx[-1]):
             self.getPivotPosition()
             self.setValues()
+
+            # set the entry value
+            if self.pivot['x'] in self.base:
+                self.base[self.base.index(self.pivot['x'])] = -1
+            if self.pivot['y'] < len(self.base):
+                self.base[self.pivot['y']] = self.pivot['x']
 
 
     def getPivotPosition(self):
