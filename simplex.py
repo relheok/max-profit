@@ -3,8 +3,17 @@ class Simplex:
         self.mtx = [[1, 0, 1, 0, 2, 1, 0, 0, 0, 0, resources[0]],
                     [1, 2, 0, 1, 0, 0, 1, 0, 0, 0, resources[1]],
                     [2, 1, 0, 1, 0, 0, 0, 1, 0, 0, resources[2]],
-                    [0, 0, 3, 1, 2, 0, 0, 0, 1, 0, resources[3]],
-                    [-prices[0], -prices[1], -prices[2], -prices[3], -prices[4], 0, 0, 0, 0, 1, 0]]
+                    [0, 0, 3, 1, 2, 0, 0, 0, 1, 0, resources[3]]]
+
+        # set matrix last line
+        pr = []
+        for i in range(len(prices)):
+            check = True
+            for x in range(len(self.mtx)):
+                check = self.mtx[x][i] == 0 or self.mtx[x][-1] != 0
+            pr.append(-prices[i] if check else prices[i])
+        pr.extend([0] * (len(prices) - 1) + [1, 0])
+        self.mtx.append(pr)
 
         self.pivot = {'x': -1, 'y': -1}
         self.resources = resources
