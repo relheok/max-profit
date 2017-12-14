@@ -55,6 +55,12 @@ class ConfigParser():
     def get_constraints_values(self):
         return [x['values'] for x in self.constraints]
 
+    def get_nb_constraints(self):
+        return len(self.constraints)
+
+    def get_nb_products(self):
+        return len(self.products)
+
 
 # Init configparser
 def configparser(csvfile=""):
