@@ -14,8 +14,10 @@ class Simplex:
     def solve(self):
         # We are finished when all the elements of the last lines are greate or equal to 0
         while any(x < 0 for x in self.mtx[-1]):
-
             self.getPivotPosition()
+            self.setValues()
+
+
     def getPivotPosition(self):
         self.pivot = {'x': -1, 'y': -1} # reset pivot
 
@@ -38,3 +40,20 @@ class Simplex:
                 self.pivot['x'] = x
 
         return self.pivot
+
+
+    def setValues(self):
+        pivot_value = self.mtx[self.pivot['x']][self.pivot['y']]
+
+        # set pivot line
+        for y in range(len(self.mtx[self.pivot['x']])):
+            self.mtx[self.pivot['x']][y] /= pivot_value
+
+        # set all the others
+        for x in range(len(self.mtx)):
+            if x == self.pivot['x']:
+                continue
+
+            value = self.mtx[x][self.pivot['y']]
+            for y in range(len(self.mtx[x])):
+                self.mtx[x][y] -= self.mtx[self.pivot['x']][y] * value
