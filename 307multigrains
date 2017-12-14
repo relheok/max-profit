@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-import sys
+import sys, simplex
 
 if __name__ == "__main__":
     if len(sys.argv) != 10:
@@ -20,3 +20,7 @@ if __name__ == "__main__":
     elif any(x <= 0 for x in prices): # check if all prices are greater than 0
         print("The price must be greater than 0", file=sys.stderr)
         sys.exit(84)
+
+    smx = simplex.Simplex(resources, prices)
+    smx.solve()
+    print(smx)
