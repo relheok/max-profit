@@ -24,8 +24,8 @@ class Simplex:
     def solve(self):
         # We are finished when all the elements of the last lines are greate or equal to 0
         while any(x < 0 for x in self.mtx[-1]):
-            self.getPivotPosition()
-            self.setValues()
+            self.get_pivot_position()
+            self.set_values()
 
             # set the entry value
             if self.pivot['x'] in self.base:
@@ -34,22 +34,19 @@ class Simplex:
                 self.base[self.pivot['y']] = self.pivot['x']
 
 
-    def getPivotPosition(self):
+    def get_pivot_position(self):
         self.pivot = {'x': -1, 'y': -1} # reset pivot
 
         mini = 0
-
         for y in range(len(self.mtx[-1])):
             if self.mtx[-1][y] < mini:
                 mini = self.mtx[-1][y]
                 self.pivot['y'] = y
 
         mini = -1
-
         for x in range(len(self.mtx)):
             if self.mtx[x][self.pivot['y']] == 0:
                 continue
-
             res = self.mtx[x][-1] / self.mtx[x][self.pivot['y']]
             if res > 0 and (res < mini or mini == -1):
                 mini = res
@@ -58,7 +55,7 @@ class Simplex:
         return self.pivot
 
 
-    def setValues(self):
+    def set_values(self):
         pivot_value = self.mtx[self.pivot['x']][self.pivot['y']]
 
         # set pivot line
@@ -69,7 +66,6 @@ class Simplex:
         for x in range(len(self.mtx)):
             if x == self.pivot['x']:
                 continue
-
             value = self.mtx[x][self.pivot['y']]
             for y in range(len(self.mtx[x])):
                 self.mtx[x][y] -= self.mtx[self.pivot['x']][y] * value
