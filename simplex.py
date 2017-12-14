@@ -100,6 +100,9 @@ class Simplex:
                 + "total production value: € {:.2f}".format(self.mtx[-1][-1]))
 
 
-def simplex(resources, prices, csvfile=""):
-    spx = Simplex(resources, prices, configparser.configparser(csvfile))
+def simplex(resources, prices, csvfile="", parser=None):
+    if parser:
+        spx = Simplex(resources, prices, parser)
+    else:
+        spx = Simplex(resources, prices, configparser.configparser(csvfile))
     return spx
