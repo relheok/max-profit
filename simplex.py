@@ -78,13 +78,13 @@ class Simplex:
     def __str__(self):
         resources = ", ".join("{} F{}".format(x, i + 1) for i, x in enumerate(self.resources))
         products = ["{:.2f}".format(self.mtx[x][-1]) if x != -1 else 0 for x in self.base]
-        return "resources: {}\n\n".format(resources)\
-            + "oatmeal: {} units at € {} /unit\n".format(products[0], self.prices[0])\
-            + "wheat: {} units at € {} /unit\n".format(products[1], self.prices[1])\
-            + "corn: {} units at € {} /unit\n".format(products[2], self.prices[2])\
-            + "barley: {} units at € {} /unit\n".format(products[3], self.prices[3])\
-            + "soy: {} units at € {} /unit\n".format(products[4], self.prices[4])\
-            + "total production value: € {:.2f}".format(self.mtx[-1][-1])
+        return ("resources: {}\n\n".format(resources)
+                + "oatmeal: {} units at € {} /unit\n".format(products[0], self.prices[0])
+                + "wheat: {} units at € {} /unit\n".format(products[1], self.prices[1])
+                + "corn: {} units at € {} /unit\n".format(products[2], self.prices[2])
+                + "barley: {} units at € {} /unit\n".format(products[3], self.prices[3])
+                + "soy: {} units at € {} /unit\n".format(products[4], self.prices[4])
+                + "total production value: € {:.2f}".format(self.mtx[-1][-1]))
 
 
 """
