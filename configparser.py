@@ -31,11 +31,11 @@ class ConfigParser():
                 raise ValueError("Constaint {} already exists".format(name))
             elif size != len(row) - 1:
                 raise ValueError("line '{}' expected {} values got {}"
-                                     .format(line, size, len(row) - 1))
+                                 .format(line, size, len(row) - 1))
 
             try:
                 self.constraints.append({'name': name,
-                                         'value': [float(x) for x in row[1:]]})
+                                         'values': [float(x) for x in row[1:]]})
             except ValueError:
                 raise ValueError("line '{}' expected numbers for each value"
                                  .format(line))
