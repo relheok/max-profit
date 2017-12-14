@@ -6,6 +6,9 @@ import configparser
 
 class Simplex:
     def __init__(self, resources, prices, parser):
+        if len(resources) + len(prices) != parser.get_nb_constraints() + parser.get_nb_products():
+            raise ValueError("Invalid number of arguments")
+
         self.pivot = {'x': -1, 'y': -1}
         self.resources = resources
         self.prices = prices
