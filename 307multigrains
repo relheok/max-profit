@@ -3,14 +3,10 @@
 import sys
 import simplex
 
-if __name__ == "__main__":
-    if len(sys.argv) != 10:
-        print("Invalid number of arguments", file=sys.stderr)
-        sys.exit(84);
-
+def parse_args(args):
     try:
-        resources = [int(x) for x in sys.argv[1:5]] # get resources
-        prices = [int(x) for x in sys.argv[5:]] # get prices
+        resources = [int(x) for x in args[:4]] # get resources
+        prices = [int(x) for x in args[4:]] # get prices
     except:
         print("All arguments mus be integers", file=sys.stderr)
         sys.exit(84)
@@ -22,6 +18,18 @@ if __name__ == "__main__":
         print("The price must be greater than 0", file=sys.stderr)
         sys.exit(84)
 
+    return resources, prices
+
+def main():
+    if len(sys.argv) != 10:
+        print("Invalid number of arguments", file=sys.stderr)
+        sys.exit(84);
+
+    resources, prices = parse_args(sys.argv[1:])
+
     smx = simplex.simplex(resources, prices)
     smx.solve()
     print(smx)
+
+if __name__ == "__main__":
+    main()
