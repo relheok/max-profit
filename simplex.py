@@ -7,13 +7,14 @@ import configparser
 class Simplex:
     def __init__(self, resources, prices, parser):
         if len(resources) + len(prices) != parser.get_nb_constraints() + parser.get_nb_products():
-            raise ValueError("Invalid number of arguments")
+            raise ValueError('Invalid number of arguments')
 
         self.pivot = {'x': -1, 'y': -1}
         self.resources = resources
         self.prices = prices
         self.base = [-1] * len(prices)
         self.constraints_names = parser.get_constraints_names()
+        self.pdt_names = parser.products
 
         self.mtx = []
         self.init_mtx(parser)
@@ -85,21 +86,27 @@ class Simplex:
             for y in range(len(self.mtx[x])):
                 self.mtx[x][y] -= self.mtx[self.pivot['x']][y] * value
 
+    def get_pdt_quantities(self):
+        if not hasattr(self, 'pdt_quantities'):
+            self.pdt_quantities = [self.mtx[x][-1] if x != -1 else 0 for x in self.base]
+        return self.pdt_quantities
+
+    def get_total(self):
+        if not hasattr(self, 'total'):
+            self.total = sum(pdt * prc for pdt, prc in zip(self.get_pdt_quantities(), self.prices))
+        return self.total
+
     def __str__(self):
-        resources = ", ".join("{} {}"
+        resources = ', '.join('{} {}'
                               .format(r, n) for r, n in zip(self.resources, self.constraints_names))
-        products = ["{:.2f}".format(self.mtx[x][-1]) if x != -1 else 0 for x in self.base]
-        total = sum(float(products[i]) * self.prices[i] for i in range(len(self.prices)))
-        return ("resources: {}\n\n".format(resources)
-                + "oatmeal: {} units at € {} /unit\n".format(products[0], self.prices[0])
-                + "wheat: {} units at € {} /unit\n".format(products[1], self.prices[1])
-                + "corn: {} units at € {} /unit\n".format(products[2], self.prices[2])
-                + "barley: {} units at € {} /unit\n".format(products[3], self.prices[3])
-                + "soy: {} units at € {} /unit\n".format(products[4], self.prices[4])
-                + "total production value: € {:.2f}".format(total))
+        return ('resources: {}\n\n'.format(resources)
+                + ''.join('{}: {} units at € {} /unit\n'
+                            .format(n, '{:.2f}'.format(pdt) if pdt != 0 else 0, prc)
+                          for n, pdt, prc in zip(self.pdt_names, self.get_pdt_quantities(), self.prices))
+                + 'total production value: € {:.2f}'.format(self.get_total()))
 
 
-def simplex(resources, prices, csvfile="", parser=None):
+def simplex(resources, prices, csvfile='', parser=None):
     if parser:
         spx = Simplex(resources, prices, parser)
     else:
