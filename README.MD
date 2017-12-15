@@ -1,5 +1,5 @@
 # max-profit
-A python 3 project to calculate the maximum profit with constraints.
+A python 3 project to calculate the optimal production according to limited resources.
 
 ## Configuration file
 The configuration file is a CSV containing:

@@ -1,26 +1,25 @@
-"""
-Module implementing simplex algorithm
-"""
+"""Module implementing simplex algorithm"""
 
-import configparser
+import spxparser
 
 class Simplex:
     def __init__(self, resources, prices, parser):
-        if len(resources) + len(prices) != parser.get_nb_constraints() + parser.get_nb_products():
+        if len(resources) + len(prices) != \
+           parser.get_nb_resources() + parser.get_nb_products():
             raise ValueError('Invalid number of arguments')
 
         self.pivot = {'x': -1, 'y': -1}
         self.resources = resources
         self.prices = prices
         self.base = [-1] * len(prices)
-        self.constraints_names = parser.get_constraints_names()
+        self.resources_names = parser.get_resources_names()
         self.pdt_names = parser.products
 
         self.mtx = []
         self.init_mtx(parser)
 
     def init_mtx(self, parser):
-        values = parser.get_constraints_values()
+        values = parser.get_resources_values()
         psize = len(self.prices)
         for i in range(len(self.resources)):
             self.mtx.append(values[i]
@@ -40,7 +39,8 @@ class Simplex:
         self.mtx.append(pr)
 
     def solve(self):
-        # We are finished when all the elements of the last lines are greate or equal to 0
+        # We are finished when all the elements of
+        # the last line are greater or equal to 0
         while any(x < 0 for x in self.mtx[-1]):
             self.get_pivot_position()
             self.set_values()
@@ -88,21 +88,30 @@ class Simplex:
 
     def get_pdt_quantities(self):
         if not hasattr(self, 'pdt_quantities'):
-            self.pdt_quantities = [self.mtx[x][-1] if x != -1 else 0 for x in self.base]
+            self.pdt_quantities = [self.mtx[x][-1] if x != -1 else 0
+                                   for x in self.base]
         return self.pdt_quantities
 
     def get_total(self):
         if not hasattr(self, 'total'):
-            self.total = sum(pdt * prc for pdt, prc in zip(self.get_pdt_quantities(), self.prices))
+            self.total = sum(pdt * prc
+                             for pdt, prc
+                             in zip(self.get_pdt_quantities(), self.prices))
         return self.total
 
     def __str__(self):
         resources = ', '.join('{} {}'
-                              .format(r, n) for r, n in zip(self.resources, self.constraints_names))
+                              .format(r, n)
+                              for r, n
+                              in zip(self.resources, self.resources_names))
+
         return ('resources: {}\n\n'.format(resources)
                 + ''.join('{}: {} units at € {} /unit\n'
-                            .format(n, '{:.2f}'.format(pdt) if pdt != 0 else 0, prc)
-                          for n, pdt, prc in zip(self.pdt_names, self.get_pdt_quantities(), self.prices))
+                            .format(n, '{:.2f}'.format(pdt) if pdt != 0 else 0,
+                                    prc)
+                          for n, pdt, prc
+                          in zip(self.pdt_names, self.get_pdt_quantities(),
+                                 self.prices))
                 + 'total production value: € {:.2f}'.format(self.get_total()))
 
 
@@ -110,5 +119,5 @@ def simplex(resources, prices, csvfile='', parser=None):
     if parser:
         spx = Simplex(resources, prices, parser)
     else:
-        spx = Simplex(resources, prices, configparser.configparser(csvfile))
+        spx = Simplex(resources, prices, spxparser.spxparser(csvfile))
     return spx
