@@ -7,8 +7,8 @@ import spxparser
 
 
 def USAGE(fd=sys.stderr):
-    print('Usage: {} NUMBER* PRICE*\n'.format(sys.argv[0])
-          + 'Calculate the optimal production according to NUMBER(s)'
+    print('Usage: {} QUANTITY* PRICE*\n'.format(sys.argv[0])
+          + 'Calculate the optimal production according to QUANTITY(ies)'
           + 'of resource(s)\nand product PRICE(s).\n\n'
           + 'Options:\n'
           + '  -c, --config=FILE         use FILE as configuration file\n'

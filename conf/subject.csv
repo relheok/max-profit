@@ -1,0 +1,5 @@
+names; oatmeal; wheat; corn; barley; soy
+F1;          1;     0;    1;      0;   2
+F2;          1;     2;    0;      1;   0
+F3;          2;     1;    0;      1;   0
+F4;          0;     0;    3;      1;   2
